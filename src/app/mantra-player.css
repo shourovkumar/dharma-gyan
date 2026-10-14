@@ -1,54 +1,156 @@
 
-/* Dharma Gyan — Global Om Mantra Player */
+/* ========================================
+   Dharma Gyan — Universal Floating Music Player
+   Center-right on every device
+======================================== */
 
 .mantra-player {
+  --mantra-size: 52px;
+
   position: fixed;
   z-index: 9998;
-  right: 18px;
-  bottom: calc(86px + env(safe-area-inset-bottom, 0px));
 
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  /* Keep the player vertically centered on the right */
+  top: 50%;
+  right: calc(18px + env(safe-area-inset-right, 0px));
+  bottom: auto;
 
-  width: max-content;
+  width: var(--mantra-size);
+  height: var(--mantra-size);
   max-width: calc(100vw - 24px);
-  padding: 9px 12px;
+  box-sizing: border-box;
 
-  border: 1px solid rgba(199, 123, 41, 0.22);
+  transform: translateY(-50%);
+}
+
+.mantra-player audio {
+  display: none;
+}
+
+/* ========================================
+   Compact Om button — visible on all devices
+======================================== */
+
+.mantra-compact-button {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  display: grid;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  place-items: center;
+
+  border: 1px solid rgba(255, 225, 164, 0.7);
+  border-radius: 50%;
+
+  background: linear-gradient(
+    145deg,
+    #527d55 0%,
+    #304e36 58%,
+    #19291f 100%
+  );
+
+  color: #fff0c5;
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 24px rgba(25, 41, 31, 0.24),
+    0 0 0 1px rgba(255, 248, 233, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+/* Keep the button accessible and clickable */
+.mantra-compact-button:focus-visible {
+  outline: 3px solid #c77b29;
+  outline-offset: 5px;
+}
+
+.mantra-compact-button:hover {
+  background: linear-gradient(
+    145deg,
+    #638c63,
+    #304e36 70%
+  );
+}
+
+.mantra-player.is-expanded .mantra-compact-button {
+  display: none;
+}
+
+/* ========================================
+   Expanded player panel
+======================================== */
+
+.mantra-player-panel {
+  display: none;
+  align-items: center;
+  gap: 9px;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 9px;
+  box-sizing: border-box;
+
+  border: 1px solid rgba(199, 123, 41, 0.25);
   border-radius: 18px;
 
-  background: rgba(255, 252, 246, 0.94);
+  background: rgba(255, 252, 246, 0.97);
   color: #27251f;
 
   box-shadow:
-    0 10px 32px rgba(68, 49, 21, 0.13),
+    0 12px 34px rgba(68, 49, 21, 0.17),
     0 2px 8px rgba(68, 49, 21, 0.06);
 
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
 }
 
+.mantra-player.is-expanded {
+  width: min(360px, calc(100vw - 36px));
+  height: auto;
+  max-width: calc(100vw - 24px);
+}
+
+.mantra-player.is-expanded .mantra-player-panel {
+  display: flex;
+  animation: mantra-panel-appear 220ms ease both;
+}
+
+/* Om symbol inside expanded panel */
 .mantra-player-symbol {
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 39px;
+  height: 39px;
   flex: 0 0 auto;
   place-items: center;
 
   border: 1px solid rgba(199, 123, 41, 0.24);
-  border-radius: 13px;
+  border-radius: 12px;
 
   background: linear-gradient(145deg, #fff4dc, #f1d9ae);
   color: #96561d;
 
-  font-family: "Noto Sans Devanagari", "Nirmala UI", serif;
-  font-size: 27px;
+  font-family:
+    "Noto Sans Devanagari",
+    "Nirmala UI",
+    serif;
+  font-size: 25px;
   line-height: 1;
 }
 
+/* Track name and playback status */
 .mantra-player-info {
   display: flex;
+  flex: 1 1 auto;
   min-width: 0;
   flex-direction: column;
   gap: 3px;
@@ -63,25 +165,30 @@
 }
 
 .mantra-player-info span {
+  overflow: hidden;
   color: #858071;
   font-size: 10px;
   line-height: 1.4;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+/* Play / Pause */
 .mantra-player-toggle {
   display: grid;
-  width: 39px;
-  height: 39px;
+  width: 38px;
+  height: 38px;
   flex: 0 0 auto;
   place-items: center;
 
+  padding: 0;
   border: 0;
   border-radius: 50%;
+
   background: #304e36;
   color: #fffaf1;
-
   cursor: pointer;
+
   transition:
     transform 180ms ease,
     background 180ms ease;
@@ -101,44 +208,110 @@
   opacity: 0.5;
 }
 
+/* Volume control */
 .mantra-volume-control {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   color: #76582f;
 }
 
 .mantra-volume-control input {
-  width: 60px;
-  height: 4px;
+  width: 55px;
+  height: 5px;
+  margin: 0;
   accent-color: #96561d;
   cursor: pointer;
 }
 
+/* Minimize button */
+.mantra-collapse-button {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  place-items: center;
+
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+
+  background: #eee5d5;
+  color: #5d594f;
+  cursor: pointer;
+}
+
+.mantra-collapse-button:hover {
+  background: #e2d4bd;
+}
+
+/* Screen-reader only label */
 .mantra-sr-only {
   position: absolute;
   width: 1px;
   height: 1px;
   overflow: hidden;
+
   clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
   clip-path: inset(50%);
+  white-space: nowrap;
 }
+
+.mantra-player button:focus-visible {
+  outline: 3px solid #c77b29;
+  outline-offset: 4px;
+}
+
+/* ========================================
+   Tablet
+======================================== */
+
+@media (min-width: 481px) and (max-width: 900px) {
+  .mantra-player {
+    --mantra-size: 50px;
+
+    right: calc(16px + env(safe-area-inset-right, 0px));
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+  }
+
+  .mantra-player.is-expanded {
+    width: min(350px, calc(100vw - 32px));
+  }
+}
+
+/* ========================================
+   Mobile
+======================================== */
 
 @media (max-width: 480px) {
   .mantra-player {
-    right: 12px;
-    bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+    --mantra-size: 46px;
+
+    right: calc(12px + env(safe-area-inset-right, 0px));
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+  }
+
+  .mantra-player.is-expanded {
+    width: min(360px, calc(100vw - 24px));
+    max-width: calc(100vw - 24px);
+  }
+
+  .mantra-player.is-expanded .mantra-player-panel {
     gap: 7px;
     padding: 8px;
     border-radius: 16px;
   }
 
   .mantra-player-symbol {
-    width: 36px;
-    height: 36px;
-    border-radius: 11px;
-    font-size: 23px;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    font-size: 22px;
   }
 
   .mantra-player-info strong {
@@ -150,38 +323,86 @@
   }
 
   .mantra-player-toggle {
-    width: 35px;
-    height: 35px;
+    width: 34px;
+    height: 34px;
   }
 
   .mantra-volume-control {
-    gap: 4px;
+    gap: 3px;
   }
 
   .mantra-volume-control input {
-    width: 42px;
+    width: 38px;
+  }
+
+  .mantra-collapse-button {
+    width: 24px;
+    height: 24px;
   }
 }
 
+/* Very narrow phones */
 @media (max-width: 350px) {
   .mantra-player {
-    gap: 6px;
+    --mantra-size: 44px;
+
+    right: calc(10px + env(safe-area-inset-right, 0px));
+    top: 50%;
+    bottom: auto;
+  }
+
+  .mantra-player.is-expanded {
+    width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
+  }
+
+  .mantra-player.is-expanded .mantra-player-panel {
+    gap: 5px;
     padding: 7px;
   }
 
-  .mantra-player-info span {
-    max-width: 95px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .mantra-player-symbol {
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+  }
+
+  .mantra-player-toggle {
+    width: 31px;
+    height: 31px;
   }
 
   .mantra-volume-control input {
-    width: 32px;
+    width: 29px;
+  }
+
+  .mantra-player-info span {
+    max-width: 80px;
   }
 }
 
+/* Expanded panel entrance animation */
+@keyframes mantra-panel-appear {
+  from {
+    opacity: 0;
+    transform: translateY(5px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Respect reduced-motion settings */
 @media (prefers-reduced-motion: reduce) {
-  .mantra-player-toggle {
+  .mantra-player-panel,
+  .mantra-player-toggle,
+  .mantra-compact-button {
     transition: none;
+  }
+
+  .mantra-player.is-expanded .mantra-player-panel {
+    animation: none;
   }
 }
