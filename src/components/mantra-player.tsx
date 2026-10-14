@@ -88,7 +88,7 @@ export default function MantraPlayer() {
     <aside className="mantra-player" aria-label="Om mantra audio player">
       <audio
         ref={audioRef}
-        src="/audio/om-chant.mp3"
+        src="/audio/hindu-krishna-flute.mp3"
         loop
         preload="auto"
         onPlay={() => {
@@ -108,7 +108,7 @@ export default function MantraPlayer() {
       </div>
 
       <div className="mantra-player-info">
-        <strong>Om Mantra</strong>
+        <strong>Krishna Flute</strong>
 
         <span aria-live="polite">
           {hasAudioError
