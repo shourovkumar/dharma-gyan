@@ -16,6 +16,7 @@ const labels: Record<
     scriptures: string;
     deities: string;
     panchang: string;
+    search: string;
   }
 > = {
   bn: {
@@ -23,18 +24,21 @@ const labels: Record<
     scriptures: "শাস্ত্রগ্রন্থ",
     deities: "দেব-দেবী",
     panchang: "পঞ্জিকা",
+    search: "সার্চ",
   },
   en: {
     home: "Home",
     scriptures: "Scriptures",
     deities: "Deities",
     panchang: "Panchang",
+    search: "Search",
   },
   hi: {
     home: "होम",
     scriptures: "धर्मग्रंथ",
     deities: "देवी-देवता",
     panchang: "पंचांग",
+    search: "खोजें",
   },
 };
 
@@ -54,7 +58,9 @@ export default function PanchangNavigation({ locale }: Props) {
         </Link>
 
         <nav className="sg-nav" aria-label="Main navigation">
-          <Link href={`/${locale}`}>{t.home}</Link>
+          <Link href={`/${locale}`}>
+            {t.home}
+          </Link>
 
           <Link href={`/${locale}/scriptures`}>
             {t.scriptures}
@@ -69,6 +75,10 @@ export default function PanchangNavigation({ locale }: Props) {
             aria-current="page"
           >
             {t.panchang}
+          </Link>
+
+          <Link href={`/${locale}/search`}>
+            {t.search}
           </Link>
         </nav>
 

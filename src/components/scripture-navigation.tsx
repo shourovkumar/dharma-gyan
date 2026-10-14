@@ -1,5 +1,5 @@
-import { siteConfig, type Locale } from "@/lib/site-config";
-import Link from "next/link";
+import { siteConfig, type Locale } from '@/lib/site-config';
+import Link from 'next/link';
 
 type Props = {
   locale: Locale;
@@ -14,39 +14,40 @@ const labels: Record<
     deities: string;
     calendar: string;
     learning: string;
+    search: string;
     library: string;
   }
 > = {
   bn: {
-    home: "হোম",
-    scriptures: "শাস্ত্রগ্রন্থ",
-    deities: "দেব-দেবী",
-    calendar: "পঞ্জিকা",
-    learning: "শেখার পথ",
-    library: "শাস্ত্রের সংগ্রহে ফিরুন",
+    home: 'হোম',
+    scriptures: 'শাস্ত্রগ্রন্থ',
+    deities: 'দেব-দেবী',
+    calendar: 'পঞ্জিকা',
+    learning: 'শেখার পথ',
+    search: 'সার্চ',
+    library: 'শাস্ত্রের সংগ্রহে ফিরুন',
   },
   en: {
-    home: "Home",
-    scriptures: "Scriptures",
-    deities: "Deities",
-    calendar: "Panchang",
-    learning: "Learning",
-    library: "Back to scripture library",
+    home: 'Home',
+    scriptures: 'Scriptures',
+    deities: 'Deities',
+    calendar: 'Panchang',
+    learning: 'Learning',
+    search: 'Search',
+    library: 'Back to scripture library',
   },
   hi: {
-    home: "होम",
-    scriptures: "धर्मग्रंथ",
-    deities: "देवी-देवता",
-    calendar: "पंचांग",
-    learning: "सीखने के मार्ग",
-    library: "धर्मग्रंथ संग्रह पर लौटें",
+    home: 'होम',
+    scriptures: 'धर्मग्रंथ',
+    deities: 'देवी-देवता',
+    calendar: 'पंचांग',
+    learning: 'सीखने के मार्ग',
+    search: 'खोजें',
+    library: 'धर्मग्रंथ संग्रह पर लौटें',
   },
 };
 
-export default function ScriptureNavigation({
-  locale,
-  currentPath,
-}: Props) {
+export default function ScriptureNavigation({ locale, currentPath }: Props) {
   const t = labels[locale];
 
   return (
@@ -66,40 +67,32 @@ export default function ScriptureNavigation({
 
           <Link
             href={`/${locale}/scriptures`}
-            aria-current={
-              currentPath === "/scriptures" ? "page" : undefined
-            }
+            aria-current={currentPath === '/scriptures' ? 'page' : undefined}
           >
             {t.scriptures}
           </Link>
 
-          <Link href={`/${locale}#deities`}>
-            {t.deities}
-          </Link>
+          <Link href={`/${locale}#deities`}>{t.deities}</Link>
 
-          <Link href={`/${locale}#calendar`}>
-            {t.calendar}
-          </Link>
+          <Link href={`/${locale}#calendar`}>{t.calendar}</Link>
 
-          <Link href={`/${locale}#learning`}>
-            {t.learning}
+          <Link href={`/${locale}#learning`}>{t.learning}</Link>
+
+          <Link
+            href={`/${locale}/search`}
+            aria-current={currentPath === '/search' ? 'page' : undefined}
+          >
+            {t.search}
           </Link>
         </nav>
 
-        <div
-          className="sg-language-switch"
-          aria-label="Choose website language"
-        >
-          {siteConfig.locales.map((language) => (
+        <div className="sg-language-switch" aria-label="Choose website language">
+          {siteConfig.locales.map(language => (
             <Link
               key={language.code}
               href={`/${language.code}${currentPath}`}
-              className={
-                locale === language.code ? "is-active" : ""
-              }
-              aria-current={
-                locale === language.code ? "page" : undefined
-              }
+              className={locale === language.code ? 'is-active' : ''}
+              aria-current={locale === language.code ? 'page' : undefined}
               lang={language.htmlLang}
             >
               {language.label}

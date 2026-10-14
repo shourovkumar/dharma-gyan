@@ -1,9 +1,6 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import {
-  siteConfig,
-  type Locale,
-} from "@/lib/site-config";
+import { siteConfig, type Locale } from '@/lib/site-config';
 
 type Props = {
   locale: Locale;
@@ -18,35 +15,36 @@ const labels: Record<
     deities: string;
     panchang: string;
     festivals: string;
+    search: string;
   }
 > = {
   bn: {
-    home: "হোম",
-    scriptures: "শাস্ত্রগ্রন্থ",
-    deities: "দেব-দেবী",
-    panchang: "পঞ্জিকা",
-    festivals: "উৎসব",
+    home: 'হোম',
+    scriptures: 'শাস্ত্রগ্রন্থ',
+    deities: 'দেব-দেবী',
+    panchang: 'পঞ্জিকা',
+    festivals: 'উৎসব',
+    search: 'সার্চ',
   },
   en: {
-    home: "Home",
-    scriptures: "Scriptures",
-    deities: "Deities",
-    panchang: "Panchang",
-    festivals: "Festivals",
+    home: 'Home',
+    scriptures: 'Scriptures',
+    deities: 'Deities',
+    panchang: 'Panchang',
+    festivals: 'Festivals',
+    search: 'Search',
   },
   hi: {
-    home: "होम",
-    scriptures: "धर्मग्रंथ",
-    deities: "देवी-देवता",
-    panchang: "पंचांग",
-    festivals: "त्योहार",
+    home: 'होम',
+    scriptures: 'धर्मग्रंथ',
+    deities: 'देवी-देवता',
+    panchang: 'पंचांग',
+    festivals: 'त्योहार',
+    search: 'खोजें',
   },
 };
 
-export default function FestivalNavigation({
-  locale,
-  currentPath,
-}: Props) {
+export default function FestivalNavigation({ locale, currentPath }: Props) {
   const t = labels[locale];
 
   return (
@@ -64,44 +62,34 @@ export default function FestivalNavigation({
         <nav className="sg-nav" aria-label="Main navigation">
           <Link href={`/${locale}`}>{t.home}</Link>
 
-          <Link href={`/${locale}/scriptures`}>
-            {t.scriptures}
-          </Link>
+          <Link href={`/${locale}/scriptures`}>{t.scriptures}</Link>
 
-          <Link href={`/${locale}/deities`}>
-            {t.deities}
-          </Link>
+          <Link href={`/${locale}/deities`}>{t.deities}</Link>
 
-          <Link href={`/${locale}/panchang`}>
-            {t.panchang}
-          </Link>
+          <Link href={`/${locale}/panchang`}>{t.panchang}</Link>
 
           <Link
             href={`/${locale}/festivals`}
-            aria-current={
-              currentPath.startsWith("/festivals")
-                ? "page"
-                : undefined
-            }
+            aria-current={currentPath.startsWith('/festivals') ? 'page' : undefined}
           >
             {t.festivals}
           </Link>
+
+          <Link
+            href={`/${locale}/search`}
+            aria-current={currentPath.startsWith('/search') ? 'page' : undefined}
+          >
+            {t.search}
+          </Link>
         </nav>
 
-        <nav
-          className="sg-language-switch"
-          aria-label="Choose website language"
-        >
-          {siteConfig.locales.map((language) => (
+        <nav className="sg-language-switch" aria-label="Choose website language">
+          {siteConfig.locales.map(language => (
             <Link
               key={language.code}
               href={`/${language.code}${currentPath}`}
-              className={
-                locale === language.code ? "is-active" : ""
-              }
-              aria-current={
-                locale === language.code ? "page" : undefined
-              }
+              className={locale === language.code ? 'is-active' : ''}
+              aria-current={locale === language.code ? 'page' : undefined}
               lang={language.htmlLang}
             >
               {language.label}

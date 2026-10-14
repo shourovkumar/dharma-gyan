@@ -14,6 +14,7 @@ const labels: Record<
     deities: string;
     calendar: string;
     learning: string;
+    search: string;
   }
 > = {
   bn: {
@@ -22,6 +23,7 @@ const labels: Record<
     deities: "দেব-দেবী",
     calendar: "পঞ্জিকা",
     learning: "শেখার পথ",
+    search: "সার্চ",
   },
   en: {
     home: "Home",
@@ -29,6 +31,7 @@ const labels: Record<
     deities: "Deities",
     calendar: "Panchang",
     learning: "Learning",
+    search: "Search",
   },
   hi: {
     home: "होम",
@@ -36,6 +39,7 @@ const labels: Record<
     deities: "देवी-देवता",
     calendar: "पंचांग",
     learning: "सीखने के मार्ग",
+    search: "खोजें",
   },
 };
 
@@ -58,7 +62,9 @@ export default function DeityNavigation({
         </Link>
 
         <nav className="dg-nav" aria-label="Main navigation">
-          <Link href={`/${locale}`}>{t.home}</Link>
+          <Link href={`/${locale}`}>
+            {t.home}
+          </Link>
 
           <Link href={`/${locale}/scriptures`}>
             {t.scriptures}
@@ -81,6 +87,17 @@ export default function DeityNavigation({
 
           <Link href={`/${locale}#learning`}>
             {t.learning}
+          </Link>
+
+          <Link
+            href={`/${locale}/search`}
+            aria-current={
+              currentPath.startsWith("/search")
+                ? "page"
+                : undefined
+            }
+          >
+            {t.search}
           </Link>
         </nav>
 
