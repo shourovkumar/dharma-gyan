@@ -1,0 +1,220 @@
+
+/* ========================================
+   Dharma Gyan — Animated Om Music Button
+======================================== */
+
+.mantra-player .mantra-compact-button {
+  position: absolute;
+  isolation: isolate;
+  overflow: visible;
+
+  border: 1px solid rgba(255, 225, 164, 0.65);
+  background: linear-gradient(
+    145deg,
+    #456b49 0%,
+    #304e36 58%,
+    #19291f 100%
+  );
+
+  color: #fff3d4;
+
+  box-shadow:
+    0 8px 22px rgba(25, 41, 31, 0.24),
+    0 0 0 1px rgba(255, 248, 233, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Soft animated halo around the Om button */
+.mantra-player .mantra-compact-button::before {
+  position: absolute;
+  z-index: -1;
+  inset: -4px;
+
+  border: 1px solid rgba(199, 123, 41, 0.48);
+  border-radius: inherit;
+
+  box-shadow: 0 0 0 0 rgba(199, 123, 41, 0.2);
+  content: "";
+
+  pointer-events: none;
+  animation: om-button-halo 2.8s ease-in-out infinite;
+}
+
+/* Small music badge: indicates that this button controls audio */
+.mantra-player .mantra-compact-button::after {
+  position: absolute;
+  right: -4px;
+  bottom: -3px;
+
+  display: grid;
+  width: 19px;
+  height: 19px;
+  place-items: center;
+
+  border: 2px solid #fffaf1;
+  border-radius: 50%;
+
+  background: linear-gradient(145deg, #f8d995, #e9b85f);
+  color: #304e36;
+
+  content: "♫";
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+
+  box-shadow: 0 3px 9px rgba(25, 41, 31, 0.2);
+  pointer-events: none;
+}
+
+/* Give the Om symbol a gentle light effect */
+.mantra-player .mantra-compact-button > span[aria-hidden="true"] {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+
+  color: #fff0c5;
+  text-shadow:
+    0 0 7px rgba(255, 229, 164, 0.3),
+    0 0 18px rgba(255, 229, 164, 0.15);
+
+  animation: om-symbol-glow 3s ease-in-out infinite;
+}
+
+/* Animated green dot while music is playing */
+.mantra-player .mantra-playing-indicator {
+  z-index: 3;
+
+  border-color: #304e36;
+  background: #a8e2a0;
+
+  box-shadow: 0 0 0 2px rgba(168, 226, 160, 0.16);
+
+  animation: music-status-pulse 1.6s ease-in-out infinite;
+}
+
+/* Hover and touch feedback */
+.mantra-player .mantra-compact-button:hover {
+  border-color: #f5d89f;
+  background: linear-gradient(
+    145deg,
+    #527d55,
+    #304e36 70%
+  );
+
+  box-shadow:
+    0 11px 28px rgba(25, 41, 31, 0.28),
+    0 0 18px rgba(199, 123, 41, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.mantra-player .mantra-compact-button:active {
+  box-shadow:
+    0 4px 12px rgba(25, 41, 31, 0.2),
+    inset 0 2px 5px rgba(0, 0, 0, 0.14);
+}
+
+.mantra-player .mantra-compact-button:focus-visible {
+  outline: 3px solid #c77b29;
+  outline-offset: 5px;
+}
+
+/* Halo animation */
+@keyframes om-button-halo {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.98);
+    box-shadow: 0 0 0 0 rgba(199, 123, 41, 0.12);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+    box-shadow: 0 0 0 5px rgba(199, 123, 41, 0.02);
+  }
+}
+
+/* Gentle glow on the sacred symbol */
+@keyframes om-symbol-glow {
+  0%,
+  100% {
+    text-shadow:
+      0 0 6px rgba(255, 229, 164, 0.25),
+      0 0 12px rgba(255, 229, 164, 0.1);
+  }
+
+  50% {
+    text-shadow:
+      0 0 9px rgba(255, 229, 164, 0.55),
+      0 0 20px rgba(255, 229, 164, 0.23);
+  }
+}
+
+/* Playing indicator animation */
+@keyframes music-status-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 2px rgba(168, 226, 160, 0.12);
+  }
+
+  50% {
+    box-shadow: 0 0 0 5px rgba(168, 226, 160, 0.08);
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .mantra-player .mantra-compact-button::before,
+  .mantra-player .mantra-compact-button > span[aria-hidden="true"],
+  .mantra-player .mantra-playing-indicator {
+    animation: none;
+  }
+}
+
+
+/* ========================================
+   Gentle music-inspired Om button sway
+======================================== */
+
+/* Move the button only while music is playing. */
+.mantra-player.is-playing .mantra-compact-button {
+  transform-origin: 50% 65%;
+  animation: om-music-sway 1.8s ease-in-out infinite;
+}
+
+/* A gentle side-to-side sway with a tiny vertical lift. */
+@keyframes om-music-sway {
+  0%,
+  100% {
+    rotate: 0deg;
+    translate: 0 0;
+  }
+
+  25% {
+    rotate: -2.5deg;
+    translate: 0 -1px;
+  }
+
+  50% {
+    rotate: 2.5deg;
+    translate: 0 -2px;
+  }
+
+  75% {
+    rotate: -1.5deg;
+    translate: 0 -1px;
+  }
+}
+
+/* Stop the sway when reduced motion is preferred. */
+@media (prefers-reduced-motion: reduce) {
+  .mantra-player.is-playing .mantra-compact-button {
+    animation: none;
+    rotate: 0deg;
+    translate: 0 0;
+  }
+}
