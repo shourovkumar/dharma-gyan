@@ -1,0 +1,734 @@
+/* =====================================
+   Deity pages: navigation
+===================================== */
+
+.dg-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--line);
+  background: rgba(251, 248, 242, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.dg-header-inner {
+  display: flex;
+  width: min(1320px, calc(100% - 48px));
+  min-height: 78px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  margin: 0 auto;
+}
+
+.dg-brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.dg-brand-mark {
+  display: grid;
+  width: 43px;
+  height: 43px;
+  place-items: center;
+  border: 1px solid #ead6b5;
+  border-radius: 14px;
+  background: #fff5e3;
+  color: var(--saffron-dark);
+  font-size: 25px;
+}
+
+.dg-brand-copy {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4;
+}
+
+.dg-brand-copy strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+}
+
+.dg-brand-copy small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.dg-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.8vw, 25px);
+}
+
+.dg-nav a {
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 700;
+  transition: color 180ms ease;
+}
+
+.dg-nav a:hover,
+.dg-nav a[aria-current="page"] {
+  color: var(--saffron-dark);
+}
+
+.dg-language-switch {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: #fff;
+}
+
+.dg-language-switch a {
+  display: inline-flex;
+  min-width: 32px;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 7px;
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.dg-language-switch a:hover {
+  color: var(--saffron-dark);
+}
+
+.dg-language-switch a.is-active {
+  background: var(--navy);
+  color: #fff;
+}
+
+/* =====================================
+   Shared page layout
+===================================== */
+
+.dg-page {
+  min-height: 75vh;
+  padding: 52px 0 88px;
+}
+
+.dg-container {
+  width: min(1080px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.dg-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 29px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.dg-breadcrumb a {
+  color: var(--saffron-dark);
+  font-weight: 700;
+}
+
+/* =====================================
+   Listing page hero
+===================================== */
+
+.dg-listing-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(28px, 5vw, 55px);
+  border: 1px solid #eadbc4;
+  border-radius: 28px;
+  background:
+    radial-gradient(
+      circle at 92% 12%,
+      rgba(215, 171, 101, 0.18),
+      transparent 33%
+    ),
+    linear-gradient(135deg, #fffaf1, #f5ecdc);
+}
+
+.dg-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--saffron-dark);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dg-listing-hero h1 {
+  max-width: 780px;
+  margin: 14px 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(33px, 5vw, 53px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+
+.dg-listing-hero > p {
+  max-width: 690px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.95;
+}
+
+.dg-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 21px;
+  padding: 8px 12px;
+  border: 1px solid #e7d5b8;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.73);
+  color: var(--saffron-dark);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.dg-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 42px 0 22px;
+}
+
+.dg-section-heading h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 600;
+}
+
+.dg-section-heading p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* =====================================
+   Deity cards
+===================================== */
+
+.dg-deity-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.dg-deity-card {
+  position: relative;
+  display: flex;
+  min-height: 235px;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 21px;
+  background: #fff;
+  box-shadow: var(--shadow-card);
+  transition:
+    border-color 200ms ease,
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.dg-deity-card::before {
+  position: absolute;
+  top: -65px;
+  right: -65px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: rgba(233, 203, 155, 0.2);
+  content: "";
+  transition: transform 250ms ease;
+}
+
+.dg-deity-card:hover {
+  transform: translateY(-5px);
+  border-color: #dcc39d;
+  box-shadow: var(--shadow-soft);
+}
+
+.dg-deity-card:hover::before {
+  transform: scale(1.3);
+}
+
+.dg-deity-card-top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.dg-deity-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border: 1px solid #efdfc5;
+  border-radius: 16px;
+  background: #fff7e9;
+  color: var(--saffron-dark);
+  font-size: 28px;
+}
+
+.dg-deity-card:nth-child(2) .dg-deity-icon {
+  background: #f8ebec;
+  border-color: #ecd8da;
+}
+
+.dg-deity-card:nth-child(3) .dg-deity-icon {
+  background: #eaf0e6;
+  border-color: #dce6d5;
+}
+
+.dg-deity-card:nth-child(4) .dg-deity-icon {
+  background: #f8eed8;
+  border-color: #eee0bd;
+}
+
+.dg-card-arrow {
+  color: #a89475;
+  font-size: 20px;
+  transition: transform 180ms ease;
+}
+
+.dg-deity-card:hover .dg-card-arrow {
+  transform: translate(3px, -3px);
+}
+
+.dg-deity-category {
+  position: relative;
+  z-index: 1;
+  color: var(--saffron-dark);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+}
+
+.dg-deity-card h3 {
+  position: relative;
+  z-index: 1;
+  margin: 7px 0 8px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.dg-deity-card > p {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 20px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.85;
+}
+
+.dg-card-footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 13px;
+  border-top: 1px solid #f0eade;
+  color: var(--saffron-dark);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* =====================================
+   Deity profile hero
+===================================== */
+
+.dg-profile-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(28px, 5vw, 54px);
+  border: 1px solid #eadbc4;
+  border-radius: 27px;
+  background:
+    radial-gradient(
+      circle at 92% 12%,
+      rgba(215, 171, 101, 0.21),
+      transparent 35%
+    ),
+    #fffaf1;
+}
+
+.dg-profile-symbol {
+  display: grid;
+  width: 66px;
+  height: 66px;
+  place-items: center;
+  margin-bottom: 24px;
+  border: 1px solid #ead6b5;
+  border-radius: 19px;
+  background: #fff3de;
+  color: var(--saffron-dark);
+  font-size: 34px;
+}
+
+.dg-profile-hero h1 {
+  max-width: 780px;
+  margin: 12px 0 15px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(35px, 5.5vw, 56px);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -0.04em;
+}
+
+.dg-profile-description {
+  max-width: 710px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+/* =====================================
+   Detail content and side panels
+===================================== */
+
+.dg-profile-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  align-items: start;
+  gap: 25px;
+  margin-top: 26px;
+}
+
+.dg-content-panel,
+.dg-sidebar-panel {
+  padding: clamp(20px, 3vw, 30px);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+.dg-content-panel {
+  margin-bottom: 18px;
+}
+
+.dg-content-panel h2,
+.dg-sidebar-panel h2 {
+  margin: 0 0 14px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.dg-content-panel > p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 2;
+}
+
+.dg-subheading {
+  margin-top: 30px !important;
+}
+
+.dg-info-list {
+  display: grid;
+  gap: 12px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dg-info-list li {
+  display: grid;
+  grid-template-columns: 33px minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid #f0e8db;
+  border-radius: 13px;
+  background: #fffcf7;
+}
+
+.dg-info-number {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  place-items: center;
+  border-radius: 10px;
+  background: #f7ead3;
+  color: var(--saffron-dark);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.dg-info-list p {
+  margin: 3px 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.85;
+}
+
+.dg-sidebar-panel {
+  margin-bottom: 17px;
+}
+
+.dg-sidebar-panel h2 {
+  font-size: 19px;
+}
+
+.dg-sidebar-panel > p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+.dg-note-panel {
+  border-color: #dfe8d9;
+  background: #f2f6ef;
+}
+
+.dg-note-panel h2 {
+  color: var(--green-dark);
+}
+
+.dg-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 11px 15px;
+  border-radius: 10px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  transition: background 180ms ease;
+}
+
+.dg-back-link:hover {
+  background: #304e36;
+}
+
+/* =====================================
+   Footer
+===================================== */
+
+.dg-footer {
+  padding: 25px 0;
+  border-top: 1px solid var(--line);
+  background: #f2ece0;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.dg-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px 25px;
+}
+
+.dg-footer-inner a {
+  color: var(--saffron-dark);
+  font-weight: 700;
+}
+
+/* =====================================
+   Tablet and mobile responsive styles
+===================================== */
+
+@media (max-width: 1000px) {
+  .dg-header-inner {
+    gap: 13px;
+  }
+
+  .dg-nav {
+    gap: 12px;
+  }
+
+  .dg-nav a {
+    font-size: 10px;
+  }
+
+  .dg-profile-layout {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 17px;
+  }
+}
+
+@media (max-width: 760px) {
+  .dg-header-inner {
+    width: calc(100% - 30px);
+    min-height: 70px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .dg-brand-mark {
+    width: 38px;
+    height: 38px;
+    font-size: 22px;
+  }
+
+  .dg-brand-copy strong {
+    font-size: 16px;
+  }
+
+  .dg-brand-copy small {
+    font-size: 7px;
+  }
+
+  .dg-nav {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 12px 19px;
+    padding-top: 5px;
+  }
+
+  .dg-nav a {
+    font-size: 10px;
+  }
+
+  .dg-language-switch {
+    margin-left: auto;
+  }
+
+  .dg-language-switch a {
+    min-width: 27px;
+    padding: 6px 4px;
+  }
+
+  .dg-container {
+    width: calc(100% - 32px);
+  }
+
+  .dg-page {
+    padding: 31px 0 60px;
+  }
+
+  .dg-breadcrumb {
+    margin-bottom: 22px;
+  }
+
+  .dg-listing-hero,
+  .dg-profile-hero {
+    padding: 27px 22px;
+    border-radius: 21px;
+  }
+
+  .dg-listing-hero h1 {
+    font-size: clamp(30px, 8vw, 43px);
+  }
+
+  .dg-listing-hero > p,
+  .dg-profile-description {
+    font-size: 12px;
+  }
+
+  .dg-deity-grid {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .dg-deity-card {
+    min-height: 0;
+    padding: 21px;
+  }
+
+  .dg-deity-card h3 {
+    font-size: 22px;
+  }
+
+  .dg-deity-card > p {
+    font-size: 11px;
+  }
+
+  .dg-profile-hero h1 {
+    font-size: clamp(32px, 8vw, 44px);
+  }
+
+  .dg-profile-layout {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .dg-content-panel,
+  .dg-sidebar-panel {
+    padding: 21px;
+  }
+
+  .dg-content-panel h2 {
+    font-size: 22px;
+  }
+
+  .dg-footer-inner {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 390px) {
+  .dg-header-inner {
+    width: calc(100% - 22px);
+  }
+
+  .dg-brand-copy small {
+    max-width: 115px;
+    font-size: 6px;
+  }
+
+  .dg-nav {
+    gap: 10px 14px;
+  }
+
+  .dg-container {
+    width: calc(100% - 24px);
+  }
+
+  .dg-listing-hero,
+  .dg-profile-hero {
+    padding-inline: 18px;
+  }
+
+  .dg-content-panel,
+  .dg-sidebar-panel {
+    padding: 18px;
+  }
+
+  .dg-info-list li {
+    grid-template-columns: 29px minmax(0, 1fr);
+    gap: 9px;
+    padding: 11px;
+  }
+
+  .dg-info-number {
+    width: 28px;
+    height: 28px;
+  }
+}

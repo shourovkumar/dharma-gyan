@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+
+import "./deities.css";
 import "./globals.css";
 import "./language-switch.css";
+import "./panchang.css";
+import "./scriptures.css";
 
 export const metadata: Metadata = {
   title: {
