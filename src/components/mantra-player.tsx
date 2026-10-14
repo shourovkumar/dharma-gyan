@@ -1,10 +1,18 @@
 'use client';
 
-import { useEffect, useRef, useState, type ChangeEvent } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
+} from 'react';
 
 export default function MantraPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const userPausedRef = useRef(false);
+  const volumeRef = useRef(0.12);
   const cleanupUnlockRef = useRef<(() => void) | null>(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -21,32 +29,23 @@ export default function MantraPlayer() {
     let disposed = false;
     let playRequested = false;
 
-    let handleUserGesture = (_event: Event) => {};
-
-    const removeUnlockListeners = () => {
-      document.removeEventListener('pointerdown', handleUserGesture);
-      document.removeEventListener('keydown', handleUserGesture);
-      document.removeEventListener('touchstart', handleUserGesture);
-
-      if (cleanupUnlockRef.current === removeUnlockListeners) {
-        cleanupUnlockRef.current = null;
+    function attemptPlayback(target?: EventTarget | null) {
+      if (disposed || userPausedRef.current || !audio.paused || playRequested || audio.error) {
+        return;
       }
-    };
 
-    cleanupUnlockRef.current = removeUnlockListeners;
-
-    const attemptPlayback = () => {
-      if (disposed || userPausedRef.current || !audio.paused || playRequested) {
+      // Let the Play/Pause button handle its own click.
+      // This prevents a click on Play from accidentally pausing the audio.
+      if (target instanceof Element && target.closest('.mantra-player-toggle')) {
         return;
       }
 
       playRequested = true;
-      audio.volume = volume;
+      audio.volume = volumeRef.current;
 
       try {
-        const result = audio.play();
-
-        result
+        audio
+          .play()
           .then(() => {
             playRequested = false;
 
@@ -55,7 +54,6 @@ export default function MantraPlayer() {
             setIsPlaying(true);
             setNeedsInteraction(false);
             setHasAudioError(false);
-
             removeUnlockListeners();
           })
           .catch(() => {
@@ -74,38 +72,63 @@ export default function MantraPlayer() {
           setNeedsInteraction(true);
         }
       }
-    };
+    }
 
-    handleUserGesture = (event: Event) => {
-      const target = event.target;
+    function handlePointerDown(event: PointerEvent) {
+      if (!event.isPrimary) return;
 
-      // The Om button opens the controls; other page interactions
-      // provide another chance to start autoplay.
-      if (target instanceof Element && target.closest('.mantra-player')) {
+      // Mouse click, screen tap or pen interaction.
+      attemptPlayback(event.target);
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      // Support keyboard activation without starting audio
+      // when someone is merely typing into a search field.
+      if (!['Enter', ' ', 'Spacebar'].includes(event.key)) {
         return;
       }
 
-      attemptPlayback();
-    };
+      const target = event.target;
 
-    audio.volume = 0.12;
+      if (
+        target instanceof Element &&
+        (target.closest("input, textarea, select, [contenteditable='true']") ||
+          target.closest('.mantra-player-toggle'))
+      ) {
+        return;
+      }
 
-    document.addEventListener('pointerdown', handleUserGesture, {
-      passive: true,
-    });
-    document.addEventListener('keydown', handleUserGesture);
-    document.addEventListener('touchstart', handleUserGesture, {
-      passive: true,
-    });
+      attemptPlayback(target);
+    }
 
-    // First attempt: immediately when the website loads.
+    function removeUnlockListeners() {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+
+      if (cleanupUnlockRef.current === removeUnlockListeners) {
+        cleanupUnlockRef.current = null;
+      }
+    }
+
+    cleanupUnlockRef.current = removeUnlockListeners;
+
+    // Try autoplay immediately when the component mounts.
+    audio.volume = volumeRef.current;
+
     attemptPlayback();
+
+    // If autoplay is blocked, retry on the first real screen interaction.
+    document.addEventListener('pointerdown', handlePointerDown, {
+      passive: true,
+    });
+
+    document.addEventListener('keydown', handleKeyDown);
 
     return () => {
       disposed = true;
       removeUnlockListeners();
     };
-  }, [volume]);
+  }, []);
 
   async function handleTogglePlayback() {
     const audio = audioRef.current;
@@ -113,20 +136,24 @@ export default function MantraPlayer() {
     if (!audio) return;
 
     if (!audio.paused) {
+      // Remember the visitor's explicit pause for this page session.
       userPausedRef.current = true;
-      cleanupUnlockRef.current?.();
 
       audio.pause();
 
       setIsPlaying(false);
       setNeedsInteraction(false);
+
+      cleanupUnlockRef.current?.();
+
       return;
     }
 
     userPausedRef.current = false;
 
     try {
-      audio.volume = volume;
+      audio.volume = volumeRef.current;
+
       await audio.play();
 
       setIsPlaying(true);
@@ -143,6 +170,7 @@ export default function MantraPlayer() {
   function handleVolumeChange(event: ChangeEvent<HTMLInputElement>) {
     const nextVolume = Number(event.target.value);
 
+    volumeRef.current = nextVolume;
     setVolume(nextVolume);
 
     if (audioRef.current) {
@@ -150,10 +178,23 @@ export default function MantraPlayer() {
     }
   }
 
+  function handlePlayerPointerDown(event: ReactPointerEvent<HTMLElement>) {
+    // Keep expanded panel interactions from closing it accidentally.
+    event.stopPropagation();
+  }
+
+  function handlePlayerKeyDown(event: ReactKeyboardEvent<HTMLElement>) {
+    event.stopPropagation();
+  }
+
   return (
     <aside
-      className={`mantra-player${isExpanded ? ' is-expanded' : ''}${isPlaying ? ' is-playing' : ''}`}
+      className={`mantra-player${isExpanded ? ' is-expanded' : ''}${
+        isPlaying ? ' is-playing' : ''
+      }`}
       aria-label="Krishna Flute audio player"
+      onPointerDown={handlePlayerPointerDown}
+      onKeyDown={handlePlayerKeyDown}
     >
       <audio
         ref={audioRef}
@@ -172,10 +213,11 @@ export default function MantraPlayer() {
         onError={() => {
           setIsPlaying(false);
           setHasAudioError(true);
+          setNeedsInteraction(false);
         }}
       />
 
-      {/* Mobile: only the Om icon is visible initially. */}
+      {/* Compact Om button */}
       <button
         type="button"
         className="mantra-compact-button"
@@ -189,7 +231,7 @@ export default function MantraPlayer() {
         {isPlaying && <span className="mantra-playing-indicator" />}
       </button>
 
-      {/* Full controls: desktop always, mobile after tapping Om. */}
+      {/* Expanded controls */}
       <div className="mantra-player-panel">
         <div className="mantra-player-symbol" aria-hidden="true">
           ॐ
