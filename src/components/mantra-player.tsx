@@ -26,25 +26,37 @@ export default function MantraPlayer() {
 
     if (!audio) return;
 
+    // Non-null reference for nested functions.
+    const player: HTMLAudioElement = audio;
+
     let disposed = false;
     let playRequested = false;
 
     function attemptPlayback(target?: EventTarget | null) {
-      if (disposed || userPausedRef.current || !audio.paused || playRequested || audio.error) {
+      if (
+        disposed ||
+        userPausedRef.current ||
+        !player.paused ||
+        playRequested ||
+        player.error
+      ) {
         return;
       }
 
       // Let the Play/Pause button handle its own click.
       // This prevents a click on Play from accidentally pausing the audio.
-      if (target instanceof Element && target.closest('.mantra-player-toggle')) {
+      if (
+        target instanceof Element &&
+        target.closest('.mantra-player-toggle')
+      ) {
         return;
       }
 
       playRequested = true;
-      audio.volume = volumeRef.current;
+      player.volume = volumeRef.current;
 
       try {
-        audio
+        player
           .play()
           .then(() => {
             playRequested = false;
@@ -92,8 +104,10 @@ export default function MantraPlayer() {
 
       if (
         target instanceof Element &&
-        (target.closest("input, textarea, select, [contenteditable='true']") ||
-          target.closest('.mantra-player-toggle'))
+        (
+          target.closest("input, textarea, select, [contenteditable='true']") ||
+          target.closest('.mantra-player-toggle')
+        )
       ) {
         return;
       }
@@ -113,7 +127,7 @@ export default function MantraPlayer() {
     cleanupUnlockRef.current = removeUnlockListeners;
 
     // Try autoplay immediately when the component mounts.
-    audio.volume = volumeRef.current;
+    player.volume = volumeRef.current;
 
     attemptPlayback();
 
@@ -221,8 +235,10 @@ export default function MantraPlayer() {
       <button
         type="button"
         className="mantra-compact-button"
-        onClick={() => setIsExpanded(current => !current)}
-        aria-label={isExpanded ? 'Close music controls' : 'Open music controls'}
+        onClick={() => setIsExpanded((current) => !current)}
+        aria-label={
+          isExpanded ? 'Close music controls' : 'Open music controls'
+        }
         aria-expanded={isExpanded}
         title="ॐ — Music controls"
       >
@@ -260,11 +276,23 @@ export default function MantraPlayer() {
           disabled={hasAudioError}
         >
           {isPlaying ? (
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
               <path d="M7 5h4v14H7zM15 5h4v14h-4z" />
             </svg>
           ) : (
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
               <path d="M8 5.8v12.4a.8.8 0 0 0 1.2.69l10-6.2a.8.8 0 0 0 0-1.38l-10-6.2A.8.8 0 0 0 8 5.8Z" />
             </svg>
           )}
