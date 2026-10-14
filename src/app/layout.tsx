@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
+import ScrollToTop from '../components/scroll-to-top';
 import './deities.css';
 import './globals.css';
 import './hero-art.css';
 import './language-switch.css';
 import './panchang.css';
 import './scriptures.css';
+import './scroll-to-top.css';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
@@ -56,7 +58,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="bn">
-      <body>{children}</body>
+      <body>
+        {children}
+        <ScrollToTop />
+      </body>
     </html>
   );
 }
