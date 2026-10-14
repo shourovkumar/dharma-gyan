@@ -1,9 +1,21 @@
-import { cacheLife } from "next/cache";
+'use client';
 
-export default async function CurrentYear() {
-  "use cache";
+import { useSyncExternalStore } from 'react';
 
-  cacheLife("days");
+function subscribe() {
+  return () => {};
+}
 
-  return <>{new Date().getFullYear()}</>;
+function getYearSnapshot() {
+  return String(new Date().getFullYear());
+}
+
+function getServerYearSnapshot() {
+  return '';
+}
+
+export default function CurrentYear() {
+  const year = useSyncExternalStore(subscribe, getYearSnapshot, getServerYearSnapshot);
+
+  return <>{year}</>;
 }
