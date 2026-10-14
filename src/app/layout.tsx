@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
+import MantraPlayer from '../components/mantra-player';
 import ScrollToTop from '../components/scroll-to-top';
 import './deities.css';
 import './globals.css';
 import './hero-art.css';
 import './language-switch.css';
+import './mantra-player.css';
 import './panchang.css';
 import './scriptures.css';
 import './scroll-to-top.css';
@@ -61,6 +63,7 @@ export default function RootLayout({
       <body>
         {children}
         <ScrollToTop />
+        <MantraPlayer />
       </body>
     </html>
   );
