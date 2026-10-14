@@ -1,0 +1,274 @@
+
+/* ========================================
+   Dharma Gyan — Hero illustration refinement
+   Mandala petals, Om symbol and floating labels
+======================================== */
+
+.hero-art {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  min-height: clamp(350px, 42vw, 490px);
+}
+
+.hero-art::before {
+  top: 50%;
+  left: 50%;
+  width: min(420px, 88%);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-art::after {
+  inset: 10% 6%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Decorative orbits */
+.hero-art .art-orbit {
+  z-index: 0;
+  width: min(460px, 92%);
+  height: 58%;
+  pointer-events: none;
+}
+
+.hero-art .orbit-one {
+  transform: rotate(53deg);
+}
+
+.hero-art .orbit-two {
+  transform: rotate(-53deg);
+}
+
+.hero-art .orbit-three {
+  width: min(500px, 102%);
+  height: 42%;
+  transform: rotate(90deg);
+}
+
+/* Main mandala */
+.hero-art .mandala {
+  position: relative;
+  z-index: 1;
+  width: min(340px, 84%);
+  max-width: calc(100% - 28px);
+  aspect-ratio: 1;
+  overflow: visible;
+  isolation: isolate;
+  border-radius: 50%;
+  transform-origin: center;
+}
+
+/* Decorative rings */
+.hero-art .mandala-ring {
+  position: absolute;
+  pointer-events: none;
+}
+
+.hero-art .mandala-ring-one {
+  inset: 8%;
+}
+
+.hero-art .mandala-ring-two {
+  inset: 17%;
+}
+
+.hero-art .mandala-ring-three {
+  inset: 28%;
+}
+
+/*
+  FIX: Anchor all six petals at the same center.
+  Their bottom edge meets the mandala's center point.
+*/
+.hero-art .mandala-petal {
+  position: absolute;
+  top: 10%;
+  left: 39.5%;
+  width: 21%;
+  height: 40%;
+  margin: 0;
+  box-sizing: border-box;
+  transform-origin: 50% 100%;
+  border: 1px solid rgba(159, 99, 34, 0.55);
+  border-radius: 50% 50% 42% 42%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 250, 239, 0.92),
+    rgba(222, 172, 98, 0.12)
+  );
+  pointer-events: none;
+}
+
+.hero-art .petal-one {
+  transform: rotate(0deg);
+}
+
+.hero-art .petal-two {
+  transform: rotate(60deg);
+}
+
+.hero-art .petal-three {
+  transform: rotate(120deg);
+}
+
+.hero-art .petal-four {
+  transform: rotate(180deg);
+}
+
+.hero-art .petal-five {
+  transform: rotate(240deg);
+}
+
+.hero-art .petal-six {
+  transform: rotate(300deg);
+}
+
+/* Keep the Om symbol perfectly centered */
+.hero-art .mandala-center {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: 30%;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.hero-art .om-symbol {
+  display: block;
+  color: #a56525;
+  font-family:
+    "Noto Sans Devanagari",
+    "Nirmala UI",
+    "Mangal",
+    serif;
+  font-size: clamp(42px, 5vw, 64px);
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Keep captions and floating chips above the illustration */
+.hero-art .floating-chip,
+.hero-art .art-caption {
+  z-index: 3;
+  box-sizing: border-box;
+  max-width: min(235px, 54%);
+}
+
+.hero-art .floating-chip {
+  gap: 9px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.hero-art .chip-top {
+  top: 12%;
+  right: 0;
+}
+
+.hero-art .chip-bottom {
+  bottom: 19%;
+  left: 0;
+}
+
+.hero-art .art-caption {
+  right: 0;
+  bottom: 4%;
+  gap: 12px;
+}
+
+.hero-art .art-caption div {
+  min-width: 0;
+}
+
+.hero-art .art-caption-label {
+  line-height: 1.6;
+}
+
+.hero-art .art-caption strong {
+  max-width: 175px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+/* Tablet and mobile */
+@media (max-width: 760px) {
+  .hero-art {
+    width: 100%;
+    min-height: clamp(350px, 95vw, 410px);
+  }
+
+  .hero-art .mandala {
+    width: min(310px, 84%);
+    max-width: calc(100% - 24px);
+  }
+
+  .hero-art .chip-top {
+    top: 12%;
+    right: 0;
+  }
+
+  .hero-art .chip-bottom {
+    bottom: 18%;
+    left: 0;
+  }
+
+  .hero-art .art-caption {
+    right: 0;
+    bottom: 3%;
+  }
+}
+
+@media (max-width: 390px) {
+  .hero-art {
+    min-height: 340px;
+  }
+
+  .hero-art .mandala {
+    width: 82%;
+  }
+
+  .hero-art .floating-chip,
+  .hero-art .art-caption {
+    max-width: 52%;
+    padding: 8px 10px;
+  }
+
+  .hero-art .floating-chip {
+    gap: 6px;
+    font-size: 9px;
+  }
+
+  .hero-art .art-caption {
+    gap: 8px;
+  }
+
+  .hero-art .art-caption strong {
+    font-size: 14px;
+  }
+
+  .hero-art .om-symbol {
+    font-size: 42px;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .hero-art .mandala {
+    animation: none;
+  }
+
+  .hero-art .mandala-ring-two {
+    animation: none;
+  }
+
+  .hero-art .floating-chip {
+    animation: none;
+  }
+}

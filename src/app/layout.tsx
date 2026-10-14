@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 
 import './deities.css';
 import './globals.css';
+import './hero-art.css';
 import './language-switch.css';
 import './panchang.css';
 import './scriptures.css';
