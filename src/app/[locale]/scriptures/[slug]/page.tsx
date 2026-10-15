@@ -1,4 +1,4 @@
-import CurrentYear from '@/components/current-year';
+import CurrentYear from "@/components/current-year";
 import ScriptureNavigation from "@/components/scripture-navigation";
 import {
   getScriptureBySlug,
@@ -31,6 +31,7 @@ const detailLabels: Record<
     readerTitle: string;
     readerNote: string;
     libraryButton: string;
+    readerButton: string;
   }
 > = {
   bn: {
@@ -41,8 +42,9 @@ const detailLabels: Record<
     editorialTitle: "ব্যাখ্যা সম্পর্কে",
     readerTitle: "পাঠকের জন্য",
     readerNote:
-      "এই পাতায় আপাতত গ্রন্থের পরিচিতি ও বিষয়ভিত্তিক সারাংশ দেওয়া হয়েছে। মূল পাঠ, শ্লোকভিত্তিক ব্যাখ্যা, অধ্যায়, অনুবাদক এবং নির্ভরযোগ্য সূত্র যাচাই করে পরবর্তী ধাপে যোগ করা হবে।",
+      "এই পাতায় গ্রন্থের পরিচিতি ও বিষয়ভিত্তিক সারাংশ দেওয়া হয়েছে। মূল পাঠ পড়তে নিচের পাঠক বাটন ব্যবহার করুন, যেখানে উপলব্ধ মূল পাঠ ও অনুবাদ দেখা যাবে।",
     libraryButton: "শাস্ত্রের সংগ্রহে ফিরুন",
+    readerButton: "সম্পূর্ণ পাঠ পড়ুন",
   },
 
   en: {
@@ -51,10 +53,11 @@ const detailLabels: Record<
     introduction: "Introduction",
     keyIdeas: "Key ideas",
     editorialTitle: "About interpretation",
-    readerTitle: "Reader's note",
+    readerTitle: "For readers",
     readerNote:
-      "This page currently provides an introduction and topic summary. Original text, verse-by-verse explanations, chapters, translators, and reliable references will be reviewed and added in later steps.",
+      "This page provides an introduction and topic summary. Use the reading button below to access the original text and available translations.",
     libraryButton: "Return to scripture library",
+    readerButton: "Read the full text",
   },
 
   hi: {
@@ -65,19 +68,12 @@ const detailLabels: Record<
     editorialTitle: "व्याख्या के बारे में",
     readerTitle: "पाठकों के लिए",
     readerNote:
-      "इस पृष्ठ पर अभी ग्रंथ का परिचय और विषयवार सारांश दिया गया है। मूल पाठ, श्लोकवार व्याख्या, अध्याय, अनुवादक और विश्वसनीय संदर्भों की जाँच करके उन्हें अगले चरणों में जोड़ा जाएगा।",
+      "इस पृष्ठ पर ग्रंथ का परिचय और विषयवार सारांश दिया गया है। मूल पाठ और उपलब्ध अनुवाद पढ़ने के लिए नीचे दिया गया पाठ बटन चुनें।",
     libraryButton: "धर्मग्रंथ संग्रह पर लौटें",
+    readerButton: "पूरा पाठ पढ़ें",
   },
 };
 
-/*
- * IMPORTANT FIX:
- * Return valid combinations for BOTH dynamic segments:
- * locale and slug.
- *
- * 3 languages × 4 scriptures = 12 static routes.
- * This function must not return an empty array.
- */
 export function generateStaticParams() {
   return siteConfig.locales.flatMap((language) =>
     scriptureSlugs.map((slug) => ({
@@ -142,9 +138,14 @@ export default async function ScriptureDetailPage({
   const item = scripture.content[locale];
   const copy = detailLabels[locale];
 
+  const isBhagavadGita = scripture.slug === "bhagavad-gita";
+
   return (
     <>
-      <ScriptureNavigation locale={locale} currentPath={`/scriptures/${scripture.slug}`} />
+      <ScriptureNavigation
+        locale={locale}
+        currentPath={`/scriptures/${scripture.slug}`}
+      />
 
       <main className="sg-page">
         <div className="sg-container">
@@ -153,7 +154,9 @@ export default async function ScriptureDetailPage({
 
             <span aria-hidden="true">/</span>
 
-            <Link href={`/${locale}/scriptures`}>{copy.library}</Link>
+            <Link href={`/${locale}/scriptures`}>
+              {copy.library}
+            </Link>
 
             <span aria-hidden="true">/</span>
 
@@ -173,7 +176,20 @@ export default async function ScriptureDetailPage({
 
               <h1>{item.title}</h1>
 
-              <p className="sg-detail-description">{item.description}</p>
+              <p className="sg-detail-description">
+                {item.description}
+              </p>
+
+              {isBhagavadGita && (
+                <Link
+                  className="sg-library-link sg-reader-launch"
+                  href={`/${locale}/scriptures/bhagavad-gita/chapter/1`}
+                >
+                  <span aria-hidden="true">📖</span>
+                  {copy.readerButton}
+                  <span aria-hidden="true">→</span>
+                </Link>
+              )}
             </header>
 
             <div className="sg-detail-layout">
@@ -182,19 +198,37 @@ export default async function ScriptureDetailPage({
 
                 <p>{item.introduction}</p>
 
-                <h2 style={{ marginTop: '30px' }}>{copy.keyIdeas}</h2>
+                {isBhagavadGita && (
+                  <Link
+                    className="sg-library-link sg-reader-launch"
+                    href={`/${locale}/scriptures/bhagavad-gita/chapter/1`}
+                  >
+                    <span aria-hidden="true">📖</span>
+                    {copy.readerButton}
+                    <span aria-hidden="true">→</span>
+                  </Link>
+                )}
+
+                <h2 style={{ marginTop: "30px" }}>
+                  {copy.keyIdeas}
+                </h2>
 
                 <ol className="sg-key-ideas">
                   {item.keyIdeas.map((idea, index) => (
                     <li key={idea}>
-                      <span className="sg-idea-number">{String(index + 1).padStart(2, '0')}</span>
+                      <span className="sg-idea-number">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
 
                       <p>{idea}</p>
                     </li>
                   ))}
                 </ol>
 
-                <Link className="sg-library-link" href={`/${locale}/scriptures`}>
+                <Link
+                  className="sg-library-link"
+                  href={`/${locale}/scriptures`}
+                >
                   <span aria-hidden="true">←</span>
                   {copy.libraryButton}
                 </Link>
@@ -208,7 +242,21 @@ export default async function ScriptureDetailPage({
 
                 <section className="sg-sidebar-panel sg-reader-notice">
                   <h2>{copy.readerTitle}</h2>
-                  <p>{copy.readerNote}</p>
+                  <p>
+                    {isBhagavadGita
+                      ? copy.readerNote
+                      : item.description}
+                  </p>
+
+                  {isBhagavadGita && (
+                    <Link
+                      className="sg-library-link sg-reader-launch"
+                      href={`/${locale}/scriptures/bhagavad-gita/chapter/1`}
+                    >
+                      {copy.readerButton}
+                      <span aria-hidden="true"> →</span>
+                    </Link>
+                  )}
                 </section>
               </aside>
             </div>
@@ -222,7 +270,9 @@ export default async function ScriptureDetailPage({
             © <CurrentYear /> Dharma Gyan
           </span>
 
-          <Link href={`/${locale}/scriptures`}>{copy.library}</Link>
+          <Link href={`/${locale}/scriptures`}>
+            {copy.library}
+          </Link>
         </div>
       </footer>
     </>

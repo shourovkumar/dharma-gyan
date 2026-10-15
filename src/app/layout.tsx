@@ -13,6 +13,7 @@ import './panchang.css';
 import './scriptures.css';
 import './scroll-to-top.css';
 
+import { Analytics } from '@vercel/analytics/next';
 import './mantra-effects.css';
 import './mantra-player.css';
 
@@ -68,6 +69,7 @@ export default function RootLayout({
         {children}
         <ScrollToTop />
         <MantraPlayer />
+        <Analytics />
       </body>
     </html>
   );

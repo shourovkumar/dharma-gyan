@@ -1,8 +1,15 @@
+import bengaliChapterOneData from "./gita-bengali-chapter-1.json";
 import chapterData from "./gita-source/data/chapters.json";
 import translationData from "./gita-source/data/translation.json";
 import verseData from "./gita-source/data/verse.json";
 
-export type GitaTranslationLanguage = "english" | "hindi";
+export type GitaTranslationLanguage =
+  | "bengali"
+  | "english"
+  | "hindi";
+
+export const BENGALI_GITA_TRANSLATOR =
+  "Dharma Gyan — সহজ বাংলা ভাবানুবাদ";
 
 export type GitaChapter = {
   id: number;
@@ -41,6 +48,11 @@ export type GitaTranslation = {
   verse_id: number;
 };
 
+type BengaliVerseTranslation = {
+  verseNumber: number;
+  translation: string;
+};
+
 export type GitaReadableVerse = GitaVerse & {
   translation: string;
   translator: string;
@@ -49,6 +61,16 @@ export type GitaReadableVerse = GitaVerse & {
 const chapters = chapterData as GitaChapter[];
 const verses = verseData as GitaVerse[];
 const translations = translationData as GitaTranslation[];
+
+const bengaliChapterOne =
+  bengaliChapterOneData as BengaliVerseTranslation[];
+
+const bengaliVerseLookup = new Map<number, string>(
+  bengaliChapterOne.map((item) => [
+    item.verseNumber,
+    item.translation,
+  ]),
+);
 
 const translationLookup = new Map<string, GitaTranslation>();
 
@@ -79,6 +101,10 @@ export function getGitaChapter(
 export function getGitaTranslators(
   language: GitaTranslationLanguage,
 ): string[] {
+  if (language === "bengali") {
+    return [BENGALI_GITA_TRANSLATOR];
+  }
+
   return [
     ...new Set(
       translations
@@ -91,6 +117,10 @@ export function getGitaTranslators(
 export function getDefaultGitaTranslator(
   language: GitaTranslationLanguage,
 ): string {
+  if (language === "bengali") {
+    return BENGALI_GITA_TRANSLATOR;
+  }
+
   const availableTranslators = getGitaTranslators(language);
 
   const preferredTranslator =
@@ -112,6 +142,17 @@ export function getGitaChapterVerses(
     .filter((verse) => verse.chapter_number === chapterNumber)
     .sort((a, b) => a.verse_number - b.verse_number)
     .map((verse) => {
+      if (language === "bengali") {
+        return {
+          ...verse,
+          translation:
+            chapterNumber === 1
+              ? bengaliVerseLookup.get(verse.verse_number) ?? ""
+              : "",
+          translator,
+        };
+      }
+
       const key = [
         language,
         translator,
