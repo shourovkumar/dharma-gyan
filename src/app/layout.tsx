@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { Analytics } from '@vercel/analytics/next';
 
 import MantraPlayer from '../components/mantra-player';
 import ScrollToTop from '../components/scroll-to-top';
@@ -68,6 +69,7 @@ export default function RootLayout({
         {children}
         <ScrollToTop />
         <MantraPlayer />
+        <Analytics />
       </body>
     </html>
   );
